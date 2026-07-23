@@ -4,3 +4,58 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+bevy = { version = "0.19.0", default-features = false, features = [
+    "bevy_log",
+    "bevy_asset",
+    "bevy_sprite",
+    "default_font",
+    #
+    # platform
+    "bevy_window",
+    "std",
+    "bevy_winit",
+    "multi_threaded",
+    "webgl2",
+    "x11",
+    "wayland",
+    #
+    # render
+    "bevy_render",
+    "bevy_core_pipeline",
+    "bevy_post_process",
+    "bevy_sprite_render",
+    #
+    # common api
+    "bevy_animation",
+    "bevy_camera",
+    "bevy_color",
+    "bevy_image",
+    "bevy_mesh",
+    "bevy_shader",
+    "bevy_material",
+    "bevy_text",
+    "png",
+] }
+
+[features]
+default = []
+dev = [
+    "bevy/dynamic_linking",
+    "bevy/bevy_gizmos",
+    "bevy/bevy_gizmos_render",
+]
+
+[profile.dev]
+opt-level = 1
+debug = "line-tables-only"
+
+# Enable a large amount of optimization in the dev profile for dependencies.
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+lto = "fat"
+opt-level = 3
+codegen-units = 1
+strip = true
+panic = "abort"
