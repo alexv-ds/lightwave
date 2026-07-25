@@ -1,6 +1,10 @@
+mod app_ext;
+mod plugins;
+
 use bevy::prelude::*;
-
-
+use leafwing_input_manager::prelude::*;
+use bevy_transform_interpolation::prelude::*;
+use plugins::*;
 
 fn hello_world() {
     // println!("hello world!");
@@ -21,13 +25,25 @@ fn setup(mut commands: Commands) {
         }),
     ));
 
+    let input_map = InputMap::new([
+        (misc::Action::Left, KeyCode::KeyA),
+        (misc::Action::Right, KeyCode::KeyD),
+        (misc::Action::Up, KeyCode::KeyW),
+        (misc::Action::Down, KeyCode::KeyS),
+    ]);
+
     commands.spawn((
         Transform::from_xyz(0., 0., 0.),
         Sprite::from_color(Color::srgb(0.3, 0.7, 0.9), Vec2::new(0.9, 0.9)),
-    ));
+        // misc::InputMover::default(),
+        motion::MotionBundle {
+            damping: motion::Damping(11.),
+            ..default()
+        },
+        input_map,
+        // NoTranslationEasing
 
-    // let keks = commands.spawn((Transform::from_xyz(0., 0., 0.)));
-    // keks.add;
+    ));
 }
 
 fn main() {
@@ -35,7 +51,7 @@ fn main() {
     app.add_plugins(
         DefaultPlugins
             .set(bevy::log::LogPlugin {
-                level: bevy::log::Level::TRACE,
+                level: bevy::log::Level::INFO,
                 ..default()
             })
             .set(WindowPlugin {
@@ -46,11 +62,23 @@ fn main() {
                         min_height: 600.0,
                         ..default()
                     },
+                    resizable: false,
                     ..default()
                 }),
                 ..default()
             }),
     );
+
+
+
+    // app.insert_resource(Time::<Fixed>::from_hz(5.0));
+    // app.insert_resource(Time::<Fixed>::from_hz(120.0));
+
+    app.add_plugins(bevy_framepace::FramepacePlugin);
+    app.add_plugins(TransformInterpolationPlugin::interpolate_all());
+    app.add_plugins(InputManagerPlugin::<misc::Action>::default());
+    app.add_plugins(misc::MiscPlugin);
+    app.add_plugins(motion::MotionPlugin);
 
     app.add_systems(Startup, setup);
 
@@ -58,28 +86,3 @@ fn main() {
 
     app.run();
 }
-
-// fn button(label: &str) -> impl Scene {
-//     bsn! {
-//         Button
-//         Node {
-//             width: px(150),
-//             height: px(65),
-//             border: px(5),
-//             border_radius: BorderRadius::MAX,
-//             justify_content: JustifyContent::Center,
-//             align_items: AlignItems::Center,
-//         }
-//         BorderColor::from(Color::BLACK)
-//         BackgroundColor(Color::srgb(0.15, 0.15, 0.15))
-//         Children [(
-//             Text(label)
-//             TextFont {
-//                 font: FontSourceTemplate::Handle("fonts/FiraSans-Bold.ttf"),
-//                 font_size: px(33.0),
-//             }
-//             TextColor(Color::srgb(0.9, 0.9, 0.9))
-//             TextShadow
-//         )]
-//     }
-// }

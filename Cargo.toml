@@ -36,6 +36,9 @@ bevy = { version = "0.19.0", default-features = false, features = [
     "bevy_text",
     "png",
 ] }
+bevy_framepace = { version = "0.22.0", default-features = false }
+bevy_transform_interpolation = "0.5.0"
+leafwing-input-manager = { version = "0.21.0", default-features = false, features = ["keyboard", "mouse"] }
 
 [features]
 default = []
@@ -43,6 +46,9 @@ dev = [
     "bevy/dynamic_linking",
     "bevy/bevy_gizmos",
     "bevy/bevy_gizmos_render",
+    "bevy/debug_glam_assert",
+    "bevy/debug",
+    "bevy_framepace/framepace_debug"
 ]
 
 [profile.dev]
