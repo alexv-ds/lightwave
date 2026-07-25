@@ -9,6 +9,7 @@ bevy = { version = "0.19.0", default-features = false, features = [
     "bevy_asset",
     "bevy_sprite",
     "default_font",
+    "bevy_ui",
     #
     # platform
     "bevy_window",
@@ -24,6 +25,7 @@ bevy = { version = "0.19.0", default-features = false, features = [
     "bevy_core_pipeline",
     "bevy_post_process",
     "bevy_sprite_render",
+    "bevy_ui_render",
     #
     # common api
     "bevy_animation",
@@ -48,6 +50,7 @@ dev = [
     "bevy/bevy_gizmos_render",
     "bevy/debug_glam_assert",
     "bevy/debug",
+    "bevy/bevy_dev_tools",
     "bevy_framepace/framepace_debug"
 ]
 

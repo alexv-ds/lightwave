@@ -2,15 +2,9 @@ mod app_ext;
 mod plugins;
 
 use bevy::prelude::*;
-use leafwing_input_manager::prelude::*;
 use bevy_transform_interpolation::prelude::*;
+use leafwing_input_manager::prelude::*;
 use plugins::*;
-
-fn hello_world() {
-    // println!("hello world!");
-    // info!("HI DUDDLE");
-    // trace!("HI DUDDLE");
-}
 
 fn setup(mut commands: Commands) {
     commands.spawn((
@@ -42,7 +36,6 @@ fn setup(mut commands: Commands) {
         },
         input_map,
         // NoTranslationEasing
-
     ));
 }
 
@@ -69,7 +62,17 @@ fn main() {
             }),
     );
 
-
+    app.add_plugins(bevy::dev_tools::fps_overlay::FpsOverlayPlugin {
+        config: bevy::dev_tools::fps_overlay::FpsOverlayConfig {
+            enabled: true,
+            frame_time_graph_config: bevy::dev_tools::fps_overlay::FrameTimeGraphConfig {
+                min_fps: 60.0,
+                target_fps: 240.0,
+                ..default()
+            },
+            ..default()
+        },
+    });
 
     // app.insert_resource(Time::<Fixed>::from_hz(5.0));
     // app.insert_resource(Time::<Fixed>::from_hz(120.0));
@@ -79,10 +82,6 @@ fn main() {
     app.add_plugins(InputManagerPlugin::<misc::Action>::default());
     app.add_plugins(misc::MiscPlugin);
     app.add_plugins(motion::MotionPlugin);
-
     app.add_systems(Startup, setup);
-
-    app.add_systems(Update, hello_world);
-
     app.run();
 }
