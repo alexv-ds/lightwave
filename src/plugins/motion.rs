@@ -28,7 +28,6 @@ pub struct Velocity(pub Vec2);
 
 // Уменьшение скорости тела
 // Текущим плагином только чтение
-// TODO: velocity *= (-settings.friction * dt).exp();
 #[derive(Debug, Component, Deref, DerefMut, Default)]
 pub struct Damping(pub f32);
 
@@ -50,10 +49,7 @@ pub struct MotionBundle {
 // //////////////////////////// //
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet)]
-pub enum MotionSystems {
-    /// Update [`Transform`]
-    UpdateTransform,
-}
+pub struct MotionSystems;
 
 fn apply_damping(mut query: Query<(&mut Force, &Velocity, &Damping)>, time: Res<Time>) {
     let dt = time.delta_secs();
@@ -122,15 +118,17 @@ pub struct MotionPlugin;
 
 impl Plugin for MotionPlugin {
     fn build(&self, app: &mut App) {
+        app.configure_sets(FixedUpdate, MotionSystems);
+
         app.add_systems(
             FixedUpdate,
             (
                 apply_damping,
                 update_velocity,
-                clean_forces,
-                update_transform,
+                (clean_forces, update_transform),
             )
-                .chain(),
+                .chain()
+                .in_set(MotionSystems),
         );
     }
 }
