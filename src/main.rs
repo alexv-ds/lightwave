@@ -36,23 +36,14 @@ fn setup(mut commands: Commands, fixed_time: Res<Time<Fixed>>) {
         },
         input_map,
         input::LookAtMouse,
-        // weapons::DespawnAfter(fixed_time.elapsed().add(std::time::Duration::from_secs(1))),
-        // NoTranslationEasing
-    ));
-
-    commands.spawn((
-        Name::new("TestProjectile"),
-        Transform::from_xyz(1., 0., 0.),
-        Sprite::from_color(Color::srgb(1.0, 0.7, 0.0), Vec2::new(0.5, 0.2)),
-        motion::MotionBundle {
-            damping: motion::Damping(3.),
-            mass: motion::Mass(0.1),
+        weapons::TestWeapon{
+            delay: std::time::Duration::from_millis(100),
             ..default()
         },
-        weapons::DespawnAfter(fixed_time.elapsed() + std::time::Duration::from_secs(60)),
-        weapons::TestProjectile {
-            force: Vec2::new(10.0, 0.0),
-        },
+        weapons::NextFireAfter::default(),
+        weapons::FiringTarget::default(),
+        // weapons::DespawnAfter(fixed_time.elapsed().add(std::time::Duration::from_secs(1))),
+        // NoTranslationEasing
     ));
 }
 
